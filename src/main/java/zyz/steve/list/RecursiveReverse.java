@@ -78,15 +78,16 @@ public class RecursiveReverse {
 
         /* reverse the rest list and put
         the first element at the end */
-        //递归下一个节点
+        //递归下一个节点；rest指向的就是 最后一个元素。
+        // 一旦到了最后就记住它，然后每层递归返回的都是它，最终作为新的 head返回
         ListNode rest = reverse(head.next);
-        //返回后，调整指针，令上一行被递归的节点的next指向当前节点
+        //返回后，调整指针，令上一行被递归的节点的next指向当前节点，完成反转
         head.next.next = head;
 
-        /* tricky step -- see the diagram */
+        /* tricky step -- see the diagram；将当前的节点下一节点 reset掉，当本层返回时，该指针会指向其前面的节点 */
         head.next = null;
 
-        /* fix the head pointer */
+        /* 返回这个新的head， 也就是原来的尾节点*/
         return rest;
     }
 

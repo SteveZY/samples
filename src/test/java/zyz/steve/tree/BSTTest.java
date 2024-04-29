@@ -3,6 +3,7 @@ package zyz.steve.tree;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import zyz.steve.datastruct.TreeNode;
 
 import java.util.ArrayDeque;
 
@@ -54,6 +55,40 @@ public class BSTTest {
     @Test
     public void testLevelOrderTraversal(){
         BST.levelOrder(BST.root);
+    }
+
+    @Test
+    public  void testCountNodes(){
+        System.out.println(BST.countNodes(BST.root));
+    }
+
+    @Test
+    public void testFindEle(){
+        throw new RuntimeException("hhhh lll ");
+//        Assert.assertFalse(
+//                BST.find(20, BST.root)
+//
+//        );
+//        Assert.assertTrue(
+//                BST.find(3, BST.root)
+//
+//        );
+    }
+    @Test
+    public void testInvertLevelInd(){
+        BST.levelOrder(BST.root);
+
+        BST.invertTreeLevelIndependently(BST.root);
+        System.out.println("===========");
+        BST.levelOrder(BST.root);
+    }
+    @Test
+    public void testSerializeDer(){
+        String str = BST.serialize(BST.root);
+        System.out.println(BST.serialize(BST.root));
+
+        TreeNode node = BST.deserialize(str);
+        System.out.println(node);
     }
 
 }
