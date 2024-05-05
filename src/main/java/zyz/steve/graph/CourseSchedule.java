@@ -4,6 +4,8 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+//拓扑排序
+//topological sorting
 public class CourseSchedule {
 
     boolean isValid = true;
@@ -106,5 +108,44 @@ public class CourseSchedule {
             }
             numNodesCompleted++;
         }
+    }
+
+    public static List<Integer> topologicalSort(int [][] graph){
+        int[] indegree = new int[graph.length];
+        int[] outdegree = new int[graph.length];
+        for (int i = 0; i < graph.length; i++) {
+            outdegree[i] = graph[i].length;
+            //初始化 indegree
+            for(int v: graph[i])
+//            for (int j = 0; j < graph[i].length; j++) {
+                indegree[v]++;
+
+
+        }
+        System.out.println(outdegree);
+        ArrayDeque<Integer> q = new ArrayDeque<>();
+
+        for (int i = 0; i < indegree.length; i++) {
+            if(indegree[i]==0){
+                q.offer(i);
+
+            }
+        }
+        List<Integer> res = new ArrayList<>();
+        //BFS
+        while (!q.isEmpty()){
+            Integer cur = q.poll();
+            res.add(cur);
+            for(int v: graph[cur]){
+                indegree[v]--;//减小相邻节点的入度
+                if(indegree[v] ==0 ) {
+                    q.offer(v);
+                }
+            }
+        }
+        //有顶点未被遍历到， 有环，不存在拓扑排序，就返回空。图存在拓扑排序 等价于 无环
+        if(graph.length!= res.size()) return null;
+        return res;
+
     }
 }
