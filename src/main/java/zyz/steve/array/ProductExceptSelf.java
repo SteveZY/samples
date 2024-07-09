@@ -67,5 +67,24 @@ public class ProductExceptSelf {
         }
         return ans;
     }
+    int profitr(int [] a, int idx){//recursively
+//        return Math.max(a[idx] - minxx(a, idx-1), profit(a, idx-1));
+        return 0;
+    }
+    public static int profitdp(int [] a){
+        //aforementioned maxProfit is the optimised version of this general DP
+        int[] minxx = new int[a.length];
+        minxx[0]=a[0];
+        int [] dp = new int[a.length];
+        dp[0] = 0;
+        int max = 0;
+        for(int i =1; i< a.length;i++){
+            dp[i] = Math.max(dp[i-1],a[i] - minxx[i-1]);
+            max=Math.max(dp[i],max);
+            minxx[i ] = Math.min(minxx[i-1],a[i]);//save min till cur day
+        }
+        return max;
+
+    }
 
 }
