@@ -26,4 +26,20 @@ public class SortMethodTest {
         }
     }
 
+    @Test
+    public void testInsertionSort(){
+        SortMethod.insertionSort(a);
+        for(int e : a){
+            System.out.println(e);
+        }
+    }
+    @Test
+    public void testSelectionSort(){
+        SortMethod.seletionSort(a);
+        for(int e : a){
+            System.out.println(e);
+        }
+    }
+
+
 }

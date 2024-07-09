@@ -1,11 +1,17 @@
 package zyz.steve.graph;
 
 
+import com.sun.java.swing.plaf.windows.WindowsTextAreaUI;
+
+import java.lang.reflect.Array;
 import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Queue;
 
 //https://www.youtube.com/watch?v=PMMc4VsIacU&t=40s
 public class Traversal {
@@ -43,6 +49,23 @@ public class Traversal {
         }
     }
 
+    //1376. Time Needed to Inform All Employees
+//    https://leetcode.com/problems/time-needed-to-inform-all-employees/description/
+    //another similar solution
+    //https://leetcode.com/problems/time-needed-to-inform-all-employees/solutions/3077609/java-solution-9-ms-beats-95/
+//    https://leetcode.com/problems/time-needed-to-inform-all-employees/solutions/589738/java-dfs-memoization-w-explanation-complexity-analysis/
+
+    /**
+     * Bottom up DFS with memoization
+     * 记录 从每个 employee 到 roo 的 用时， 然后取最大值，
+     * 这是找 树根 到 叶子 的 最长路径
+     * @param n
+     * @param head
+     * @param m
+     * @param time
+     * @return
+     */
+
     public static int numOfMins(int n, int head, int[]m, int [] time){
         int total = 0;
         int [] marker = new int[n];
@@ -65,6 +88,73 @@ public class Traversal {
         }
         return marker[id];
     }
+    /**
+     * 也可以慢慢 构造 adj list ， 然后， 一个个 的做DFS，
+     * top down DFS
+     *
+     * 缺点是用更多的内存，速度应该差不多
+     */
+    public static int numOfMinutes(int n, int head, int[] m, int[] time) {
+        Map<Integer, List<Integer>> adj = new HashMap<>();
+        for (int i = 0; i < m.length; i++) {
+            int key = m[i];
+            if (i == head) {
+                key = head;
+            }
+            if (!adj.containsKey(key)) {
+
+                adj.put(key, new ArrayList<>());
+            }
+            if (key != i) {
+                adj.get(key).add(i);
+            }
+        }
+        System.out.println(adj);
+
+        //DFS 调用
+//        int[] visited = new int[m.length];
+//        Arrays.fill(visited,-1);
+//        dfsT2D(head, adj, time,visited);
+//        return visited[head];
+
+        //BFS 调用
+        return bfsTopDown(head, adj,time);
+    }
+    private static int dfsT2D(int id, Map<Integer, List<Integer>> adj, int[]time, int[] visited){
+        if(visited[id]!=-1) return visited[id];
+        if(!adj.containsKey(id)) {
+            visited[id] = 0;
+            return 0;
+        }
+        for(Integer nextId: adj.get(id)){
+            visited[id] = Math.max(visited[id],time[id]+ dfsT2D(nextId,adj, time, visited));
+        }
+        return visited[id];
+    }
+    private static int bfsTopDown(int id, Map<Integer, List<Integer>> adj, int[ ] time){
+        Queue<Integer> q = new ArrayDeque<>();
+        int[] visited = new int[time.length];
+        q.offer(id);
+        int max =0;
+
+        while (!q.isEmpty()) {
+            Integer node = q.poll();
+            if (visited[node] != 0) {
+                continue;
+            }
+            visited[node] = 1;
+            if (!adj.containsKey(node)) {
+                continue;
+            }
+            for (Integer next : adj.get(node)) {
+                q.offer(next);
+                time[next] += time[node];
+                max = Math.max(max, time[next]);
+            }
+        }
+        return max;
+    }
+
     //DFS recursively
 
     /**

@@ -63,4 +63,8 @@ public class TraversalTest {
     public void testNumOfMins(){
         System.out.println(Traversal.numOfMins(6, 0, new int[] {1,2,-1,1,3,4}, new int[] {0,1,1,1,1,0}));
     }
+    @Test
+    public  void testNumOfMinsTopDown(){
+        System.out.println(Traversal.numOfMinutes(6,2,new int[] {1,2,-1,1,3,4}, new int[] {0,1,1,1,1,0}));
+    }
 }

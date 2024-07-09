@@ -7,7 +7,8 @@ package zyz.steve.backtrace;
  */
 import java.util.*;
 public class WordLadder {
-
+    private final static List<List<String>> ans = new ArrayList<>();
+    private final static Set<String> marker = new HashSet<>();
     public static int LadderLength(String b, String e, List<String> dict){
         Set<String> words = new HashSet<>(dict);
         Set<String> visited = new HashSet<>();
@@ -69,7 +70,7 @@ public class WordLadder {
      * @param dict
      * @return
      */
-    public static List<List<String>> findLadders(String b, String e, List<String> dict){
+    public static List<List<String>> findLaddersBFSOnly(String b, String e, List<String> dict){
         Map<String, Set<String>> adj = new HashMap<>();
 //        adj.put(b,new HashSet<>());
         dict.forEach(ele->adj.put(ele,new HashSet<>()));
@@ -112,11 +113,112 @@ public class WordLadder {
         return ans;
     }
 
+    /**
+     * 单源最短路径问题，只不过所有路线的 weight 都是1
+     * @param beginWord
+     * @param endWord
+     * @param wordList
+     * @return
+     */
+    public static List<List<String>>  findLaddersBFSThenDFS(String beginWord, String endWord, List<String> wordList){
+        HashSet<String> words = new HashSet<>(wordList);
+
+        ArrayDeque<String> q = new ArrayDeque<>();
+        q.offer(beginWord);
+        Set<String> visited = new HashSet<>();
+        visited.add(beginWord);
+        Map<String, Integer> nodeDistance= new HashMap<>();
+        nodeDistance.put(beginWord,1);
+
+        while (!q.isEmpty()) {
+            //Dijkstra 算法
+            //由于所有路径的 长度都是1， 就不需要额外维护 pq 选最小的了
+//            BFS 填充 途中遇到的节点 到 beginWord 的距离
+            String curWord = q.poll();
+            //            for (int i = 0; i < curWord.length(); i++) {
+            if(curWord.equals(endWord)) {
+                System.out.println(nodeDistance);
+                break;
+            }
+            Integer distOfCur = nodeDistance.get(curWord);
+            //访问 下一跳，
+            for (String next : neighbours(curWord, words)) {
+                if (visited.contains(next)) {
+                    continue;
+                }
+
+                visited.add(next);
+                q.offer(next);
+                nodeDistance.put(next, distOfCur+1); //relaxation
+            }
+        }
+        //DFS + back tracking to get paths
+
+        ArrayDeque<String> path = new ArrayDeque<>();
+
+        path.offer(beginWord);
+        marker.add(beginWord);
+        dfsFromBegin(beginWord,endWord,path,nodeDistance.keySet(),nodeDistance);
+        
+//        path.push(endWord);
+//
+//        dfs(beginWord,endWord,path,nodeDistance.keySet(),nodeDistance);
+        return ans;
+
+    }
+    private static void dfs(String s,String end,ArrayDeque<String> path,Set<String> words,Map<String,Integer> nodeDist){
+        if(end.equals(s)) {
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        List<String> successors = neighbours(end, words);
+        for(String pre: successors){
+            if( nodeDist.get(pre) < nodeDist.get(end)){
+                path.push(pre);
+                dfs(s,pre,path,words,nodeDist);
+                path.pop();//backtracking
+            }
+        }
+    }
+    private static void dfsFromBegin(String s,String end, ArrayDeque<String> path, Set<String> words, Map<String, Integer> nodeDist){
+        if(s.equals(end)){
+            ans.add(new ArrayList<>(path));
+            return;
+        }
+        List<String> successors = getNexts(s, words);
+        for (String suc: successors){
+            if( nodeDist.get(suc).compareTo(nodeDist.get(s))>0 ){
+                marker.add(suc);
+                path.offer(suc);
+                dfsFromBegin(suc,end,path,words,nodeDist);
+                //返回前将路径 复位
+                path.removeLast();//backtracking
+            }
+        }
+
+    }
+    private static List<String> getNexts(String word,Set<String> words){
+
+        ArrayList<String> nexts = new ArrayList<>();
+        for (int i = 0; i < word.length(); i++) {
+            for (char c = 'a'; c <= 'z'; c++) {
+                if(c==word.charAt(i))continue;
+                char[] warr = word.toCharArray();
+                warr[i] = c;
+                String next = new String(warr);
+                if (!marker.contains(next)&&words.contains(next)) {
+                    nexts.add(next);
+                }
+            }
+        }
+        return nexts;
+    }
     private static List<String> neighbours(String word,Set<String> words) {
         //        char[] warr = null;
         ArrayList<String> nexts = new ArrayList<>();
         for (int i = 0; i < word.length(); i++) {
             for (char c = 'a'; c <= 'z'; c++) {
+                if(c==word.charAt(i))continue;
                 char[] warr = word.toCharArray();
                 warr[i] = c;
                 String next = new String(warr);
