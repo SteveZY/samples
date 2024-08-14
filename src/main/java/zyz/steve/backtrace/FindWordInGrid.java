@@ -4,6 +4,7 @@ import java.util.ArrayDeque;
 import java.util.ArrayList;
 import java.util.List;
 
+//question from Karate
 public class FindWordInGrid {
 
     static  List<int[]> ans = new ArrayList<>();

@@ -21,7 +21,7 @@ public class ArrayLCCourseTest {
 
     @Test
     public  void testPlusOne(){
-        int[] res = ArrayLCCourse.plusOneOptimised(new int[] {8,9});
+        int[] res = ArrayLCCourse.plusOneOptimised(new int[] {9,9});
         for(int digit:res){
 
             System.out.println(digit);

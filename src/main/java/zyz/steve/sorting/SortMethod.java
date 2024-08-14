@@ -23,6 +23,13 @@ public class SortMethod {
         }
     }
 
+    /**
+     *
+     * @param a
+     * @param aux
+     * @param lo  index pointing to 左侧元素
+     * @param hi  index 指向本 iteration右侧 元素
+     */
     public static void mergeSort(int[] a, int[] aux, int lo, int hi) {
         if (hi <= lo) {
             return;
