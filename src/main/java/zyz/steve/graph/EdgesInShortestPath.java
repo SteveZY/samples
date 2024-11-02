@@ -31,6 +31,6 @@ public class EdgesInShortestPath {
         int[][] ed = new int[][] {{0, 1, 4}, {0, 2, 1}, {1, 3, 2}, {1, 4, 3}, {1, 5, 1}, {2, 3, 1}, {3, 5, 3}, {4, 5, 2}};
 
         System.out.println(Arrays.toString(Arrays.copyOfRange(ed[0], 1, 3)));
-                findAnswer(6, ed);
+        findAnswer(6, ed);
     }
 }
