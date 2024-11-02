@@ -29,7 +29,7 @@ public class MinimumSpanningTree {
                 //pq 中存放 节点信息  第一个是 weight， src， dst
                 //一开始只存 0 号节点开始 相关信息，其他的节点遍历到的时候 再加进去，不需要特别更新 节点的权重，
                 // 反正每次访问到给定节点时都会加入pq，大了的话自然排到后面去了
-                pq.offer(new Integer[] {graph[0][i], 0, i});
+                pq.offer(new Integer[]{graph[0][i], 0, i});
             }
         }
         int count = 1;
@@ -50,7 +50,7 @@ public class MinimumSpanningTree {
                 int weightToNext = graph[curNodeIdx][i];
                 if (weightToNext != 0 && !visited[i]) { //
                     //add to pq
-                    pq.offer(new Integer[] {weightToNext, curNodeIdx, i});
+                    pq.offer(new Integer[]{weightToNext, curNodeIdx, i});
                 }
             }
             count++;
@@ -107,53 +107,54 @@ public class MinimumSpanningTree {
                 (o1, o2) -> o1[0].compareTo(o2[0])
         );
         boolean[] alreadyInS = new boolean[g.length];
-        alreadyInS[start] =true;
+        alreadyInS[start] = true;
         for (int i = 0; i < g.length; i++) {
             if (g[start][i] != 0) {
-                pq.offer(new Integer[] {g[start][i], i});
+                pq.offer(new Integer[]{g[start][i], i});
             }
         }
         int count = 1;
-        while (!pq.isEmpty() && count++ < g.length){
+        while (!pq.isEmpty() && count++ < g.length) {
             //get the closest one
 //            count++;
 //            if(count>=g.length) break;
             Integer[] u = pq.poll();
             alreadyInS[u[1]] = true;//放入 S
             for (int i = 0; i < g.length; i++) {//all adjs
-                if(g[u[1]][i]!=0 && !alreadyInS[i]){
+                if (g[u[1]][i] != 0 && !alreadyInS[i]) {
                     //update distance from v to start
-                    pq.offer(new Integer[]{g[u[1]][i]+u[0],i});
+                    pq.offer(new Integer[]{g[u[1]][i] + u[0], i});
                 }
 
             }
-            System.out.println("shortest dist from "+ start+" to "+u[1] +" is "+u[0]);
+            System.out.println("shortest dist from " + start + " to " + u[1] + " is " + u[0]);
         }
 
     }
-    public static boolean bellmanFord(int [][]g, int s){
+
+    public static boolean bellmanFord(int[][] g, int s) {
 
         int[] result = new int[g.length];
-        Arrays.fill(result,Integer.MAX_VALUE);
-        result[s] =0;
+        Arrays.fill(result, Integer.MAX_VALUE);
+        result[s] = 0;
         for (int v = 0; v < g.length; v++) {
-            if(g[s][v]!=0)
-            result[v] = result[s] + g[s][v];
+            if (g[s][v] != 0)
+                result[v] = result[s] + g[s][v];
         }
         for (int i = 0; i < g.length; i++) {
             for (int j = 0; j < g.length; j++) {
                 int du = result[i];
                 int w = g[i][j];
-                if(w!=0 && result[j]> du+w)
-                result[j] = du+w;
+                if (w != 0 && result[j] > du + w)
+                    result[j] = du + w;
             }
 
         }
 
         //report negative weight
         for (int u = 0; u < g.length; u++) {
-            for (int v = 0; v <g.length; v++) {
-                if(g[u][v]!=0 && result[v]>result[u]+g[u][v]) return false;
+            for (int v = 0; v < g.length; v++) {
+                if (g[u][v] != 0 && result[v] > result[u] + g[u][v]) return false;
             }
         }
         return true;
