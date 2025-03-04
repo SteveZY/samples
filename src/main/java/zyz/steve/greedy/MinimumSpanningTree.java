@@ -2,9 +2,7 @@
 package zyz.steve.greedy;
 //https://www.youtube.com/watch?v=FPEMBWg_WlY&t=686s
 
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.PriorityQueue;
+import java.util.*;
 
 //Prim's algo
 
@@ -143,9 +141,9 @@ public class MinimumSpanningTree {
         }
         for (int i = 0; i < g.length; i++) {
             for (int j = 0; j < g.length; j++) {
-                int du = result[i];
-                int w = g[i][j];
-                if (w != 0 && result[j] > du + w)
+                int du = result[i];//s 到达 当前 i的 距离，目前最短
+                int w = g[i][j]; //从 i 到 j 的距离
+                if (w != 0 && result[j] > du + w) //若从 i 到 j 的距离 加入 s-> i 距离，小于当前已知的 从 s->j 的距离 则 relax，即找到一个更短的距离
                     result[j] = du + w;
             }
 
@@ -158,5 +156,49 @@ public class MinimumSpanningTree {
             }
         }
         return true;
+    }
+
+//https://www.thejoboverflow.com/p/p1110/
+    public static int getMaxViableValue(int [] arr){
+        List<List<Integer>> pyramid = new ArrayList<>();
+        int depth = 0;
+        for (int i = 0; i < arr.length; ) {
+            depth++;//记录每层的 元素个数
+            List<Integer> row = new ArrayList<>();
+            int j = i;
+            for (; j < i+depth; j++) {
+//                i= i+j;
+                row.add(arr[j]);
+            }
+            i = j;
+            pyramid.add(row);
+        }
+
+        //bottom up
+        System.out.println(depth);
+
+        for (int i = depth-2; i >=0 ; i--) {
+            List<Integer> curLevel = pyramid.get(i);
+            List<Integer> oneLevelDown = pyramid.get(i + 1);
+
+            for (int j = 0; j < curLevel.size(); j++) {
+                curLevel.set(j, curLevel.get(j) + Math.max(oneLevelDown.get(j),oneLevelDown.get(j+1)));
+            }
+        }
+        return pyramid.get(0).get(0);
+    }
+    public int getDepth(int[] arr) {
+        return (int) (Math.sqrt(
+                arr.length * 2 * 4 + 1) - 1) >> 1;
+    }
+    public void enumArr(int[] arr) {
+        int depth = getDepth(arr);
+        //level indx from 0  to depth -1
+        for (int i = depth -2 ; i >=0; i--) {//from the second last
+
+        }
+    }
+    public static void main(String[] args) {
+        System.out.println(getMaxViableValue(new int[]{2, 3, 4, 16, 7, 8}));
     }
 }
