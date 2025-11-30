@@ -28,18 +28,21 @@ public class ProductExceptSelf {
      * 请你合并所有重叠的区间，并返回 一个不重叠的区间数组，该数组需恰好覆盖输入中的所有区间 。
      * @param a
      * @return
+     *  合并区间
      */
     public static int[][]
      mergeIntervals(int [][] a){
+        // 根据开始时间排序 从小到大 排序
         Arrays.sort(a, Comparator.comparingInt(a0 -> a0[0]));
         List<int[]> ans = new ArrayList<>();
         int i = 0;
         while ( i < a.length) {
-//            boolean merged = false;
+//            初始化 j， 在i 的基础上往后找
             int j = i+1;
-            for(;j<a.length;j++){
-                if (a[i][1]>=a[j][0]){
-                    a[i][1] = Math.max(a[j][1],a[i][1]);
+            for(;j<a.length;j++){ // 遍历 i 后面的 区间，
+                if (a[i][1]>=a[j][0]){ //比较i 结束 和 j 的开始，
+                    // 有重叠时，合并，并继续看下一个是否还有重叠
+                    a[i][1] = Math.max(a[j][1],a[i][1]); //取 i ，j 中 结束 时间较晚的 更新 i 的结束时间
 
                 }else {
                     break;
@@ -50,7 +53,8 @@ public class ProductExceptSelf {
 //                a[i][1] = a[j][1];
 //                j++;
 //            }
-            //合并后，或者无重叠时，就找到一个
+            //合并后，或者
+            // 由于已经根据开始时间排好序了，无重叠时，就找到一个
             ans.add(a[i]);
             i=j;
         }
