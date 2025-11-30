@@ -17,6 +17,8 @@ public class Traversal {
     public static int[][] graph;
     public static int[] marker;
     static {
+        // 邻接 列表 表示 一个graph ， 0 号顶点  有边 到 1 ，2， 5
+        // 所以 5号 顶点， 会有 到0 的边， 这也是 会看到 有 0 在 它的值列表中 0，2，3，6
         graph = new int[][]{{1,2,5},{0,4},{0,3,5},{2,4,5},{1,3},{0,2,3,6},{5}};
         marker = new int[7];
     }
