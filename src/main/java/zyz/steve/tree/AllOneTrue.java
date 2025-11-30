@@ -1,4 +1,5 @@
 package zyz.steve.tree;
+
 import java.util.*;
 
 //之前那个不是 O(1) , 这个用双向链表，是真正的 O(1)
@@ -27,7 +28,7 @@ public class AllOneTrue {
          * before insertion:
          * this  <----- .prev
          * .next  -----> orig_next
-         *
+         * <p>
          * after insertion:
          * this  <---- .prev ; .next-----> orig_next
          * .next ----->    node     <------.prev
@@ -50,34 +51,38 @@ public class AllOneTrue {
             this.next.prev = this.prev;
         }
     }
+
     //With doubly linked list
     Node root;
     Map<String, Node> nodes;
-    public AllOneTrue(){
+
+    public AllOneTrue() {
         root = new Node();
-        root.prev = root;root.next = root;
+        root.prev = root;
+        root.next = root;
         nodes = new HashMap<>();
     }
 
     /**
      * 这个 不同于 LFU cache ，它没有 一个容量限制， 增加的时候，不用考虑 移除 老的项目
      * 但应该 不维护 min 计数  但配合 linkedHashSet 可以 做到 移除 不常用项目的
+     *
      * @param key
      */
-    public void inc(String key){
+    public void inc(String key) {
         //简化版
         Node cur = nodes.getOrDefault(key, root);
-        if(cur.next == root|| cur.next.count>cur.count+1){
+        if (cur.next == root || cur.next.count > cur.count + 1) {
             //插入一个 count+1 计数的节点 到 当前节点的 后面，并更新cache
-            nodes.put(key,cur.insert(new Node(key,cur.count+1)));
-        }else {
+            nodes.put(key, cur.insert(new Node(key, cur.count + 1)));
+        } else {
             //当下一个节点的 访问频次 ，就是 count+1 是，直接加入
             cur.next.keys.add(key);
-            nodes.put(key,cur.next);
+            nodes.put(key, cur.next);
         }
-        if(cur != root){//不是根节点的话，说明在链表中，需要从旧的 计数 项目中 移除
+        if (cur != root) {//不是根节点的话，说明在链表中，需要从旧的 计数 项目中 移除
             cur.keys.remove(key);
-            if(cur.keys.isEmpty()) cur.remove();
+            if (cur.keys.isEmpty()) cur.remove();
         }
 
 //        if(nodes.containsKey(key)){
@@ -106,34 +111,35 @@ public class AllOneTrue {
 //            }
 //        }
     }
+
     //题目中说明 key 肯定在，故减少检查 key存在性的问题
-    public void dec(String key){
+    public void dec(String key) {
         Node cur = nodes.get(key);
 
-        if(cur.count==1){
+        if (cur.count == 1) {
             nodes.remove(key);
-        }else{
+        } else {
             Node pre = cur.prev;
-            if(pre==root || cur.count-1> pre.count){
+            if (pre == root || cur.count - 1 > pre.count) {
                 //插入新节点
-                nodes.put(key, pre.insert(new Node(key,cur.count-1)));
-            }else {
+                nodes.put(key, pre.insert(new Node(key, cur.count - 1)));
+            } else {
                 //直接放到 prev 里面
                 pre.keys.add(key);
-                nodes.put(key,pre);
+                nodes.put(key, pre);
             }
         }
         cur.keys.remove(key);
-        if(cur.keys.isEmpty()) cur.remove();
+        if (cur.keys.isEmpty()) cur.remove();
 
     }
 
-    public String getMaxKey(){
-        return root.prev!=null?root.prev.keys.iterator().next():"";
+    public String getMaxKey() {
+        return root.prev != null ? root.prev.keys.iterator().next() : "";
     }
 
-    public String getMinKey(){
-        return root.next!=null?root.next.keys.iterator().next():"";
+    public String getMinKey() {
+        return root.next != null ? root.next.keys.iterator().next() : "";
     }
 
 }
