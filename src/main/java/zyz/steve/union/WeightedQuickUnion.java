@@ -1,4 +1,5 @@
 package zyz.steve.union;
+//https://www.coursera.org/learn/algorithms-part1/lecture/fjxHC/dynamic-connectivity
 //该树的最大高度，为 lgN
 public class WeightedQuickUnion {
     //track 每个tree 的尺寸
@@ -17,7 +18,7 @@ public class WeightedQuickUnion {
         }
     }
 
-    private int getRoot(int q) {
+    public int getRoot(int q) {
         //q此处 为元素的位置index
         int temp = q;
         while (id[temp] != temp) {
