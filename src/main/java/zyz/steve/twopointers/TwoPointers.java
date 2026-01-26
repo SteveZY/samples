@@ -60,6 +60,7 @@ public class TwoPointers {
     }
 
     public static int countOnesWithPointers(int[] a) {
+        // 快慢 指针
         int i = 0, k = 0;
         int maxNum = 0;
         for (; i < a.length; i++) {
@@ -76,6 +77,7 @@ public class TwoPointers {
         return Math.max(maxNum, i - k);
     }
     //https://leetcode.com/explore/learn/card/array-and-string/205/array-two-pointer-technique/1153/
+    // for sorted arrays
     public static int[] twoSumII(int[] a, int sum) {
         int i = 0, j = a.length - 1;
         int[] ret = new int[2];
@@ -87,7 +89,7 @@ public class TwoPointers {
             } else {
                 //found
                 ret[0] = i+1;
-                ret[1] = j+1;
+                ret[1] = j+1; // add one before return per requirement
                 return ret;
             }
         }
@@ -140,7 +142,7 @@ public class TwoPointers {
      * @param nums
      */
     public static void moveZeros(int[] nums) {
-        int zeroStart = 0;
+        int zeroStart = 0; // 假定开始循环是，zeros 从 第0 index 开始 就可以。循环中发现有不是0 的，就调整该值 使其成为 所有zero的起点
         for (int i = 0; i < nums.length; i++) {
             if (nums[i] != 0) {
                 if (zeroStart != i) {
@@ -148,7 +150,7 @@ public class TwoPointers {
                     //不是同一个位置，交换
                     int tmp = nums[zeroStart];
                     nums[zeroStart] = nums[i];
-                    nums[i] = tmp;
+                    nums[i] = tmp; // 可以直接写 0 吧
                 }
                 //当发现不为零的数，就把zero start后移，否则维持不变
                 zeroStart++;

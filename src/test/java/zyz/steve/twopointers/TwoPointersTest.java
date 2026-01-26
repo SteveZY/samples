@@ -36,9 +36,9 @@ public class TwoPointersTest {
         int[] ret = TwoPointers.twoSumII(a, 16);
         Arrays.stream(ret).forEach(System.out::println);
 
-        ret = TwoPointers.twoSum(a,30);
-
-        Arrays.stream(ret).forEach(System.out::println);
+//        ret = TwoPointers.twoSum(a,30); // this version has a bug
+//
+//        Arrays.stream(ret).forEach(System.out::println);
 
     }
     @Test

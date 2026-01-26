@@ -1,6 +1,7 @@
 package zyz.steve.backtrace;
 
 /**
+ * LC 127
  * https://leetcode.com/problems/word-ladder/description/
  * A transformation sequence from word beginWord to word endWord using a dictionary
  * wordList is a sequence of words beginWord -> s1 -> s2 -> ... -> sk such that:
@@ -10,7 +11,11 @@ public class WordLadder {
     private final static List<List<String>> ans = new ArrayList<>();
     private final static Set<String> marker = new HashSet<>();
     public static int LadderLength(String b, String e, List<String> dict){
-        Set<String> words = new HashSet<>(dict);
+
+        // BFS 解法， 基本上就是 将当前 单词 的每个字母都 用剩下的25个字母 替换后 产生 新的 词，看在不在字典里
+        // 变成 图的话 因为一次只换一个字母， 看起来象这样
+        //  hit 的邻接 列表就是这样， adj(hit)= [ait,bit,...,zit, hat, hbt, ..., hzt, hia,hib,...,hiz]
+        Set<String> words = new HashSet<>(dict); //保存 字典
         Set<String> visited = new HashSet<>();
         ArrayDeque<String> fifo = new ArrayDeque<>();
 

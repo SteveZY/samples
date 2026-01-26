@@ -3,8 +3,11 @@ package zyz.steve.tree;
 import zyz.steve.datastruct.TreeNode;
 
 import java.util.ArrayDeque;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 public class BST {
     static TreeNode root;
@@ -94,9 +97,11 @@ public class BST {
         postOrder(r.right);
         System.out.println(r.val);
     }
+    // LC 102 Binary Tree Level Order Traversal
     public static void levelOrder(TreeNode r){
         //BFS 从上到下，从左到有
-        ArrayDeque<TreeNode> fifo = new ArrayDeque<>();
+        Queue<TreeNode> fifo = new ArrayDeque<>();
+//        fifo.poll()
 
         fifo.add(r);
         while (!fifo.isEmpty()) {
@@ -107,6 +112,24 @@ public class BST {
             if (null != cur.right)
                 fifo.add(cur.right);
         }
+    }
+
+    private static void levelOrderDfsHelper(TreeNode r, List<List<Integer>> res, int height){
+        // height is the current level
+        if(null == r) return; // return when node is null
+        // check if we have the buffer for the cur height or level
+        if(res.size()<= height) res.add(new ArrayList<>());
+        List<Integer> buf = res.get(height);
+        buf.add(r.val);
+        levelOrderDfsHelper(r.left,res, height+1);
+        levelOrderDfsHelper(r.right,res, height+1);
+
+    }
+    // LC 102
+    public static List<List<Integer>> levelOrderDfs(TreeNode r){
+        List<List<Integer>> res = new ArrayList<>();
+        levelOrderDfsHelper(r, res,0);
+        return res;
     }
 
     static int countNodes(TreeNode root) {
@@ -251,5 +274,14 @@ public class BST {
         node.left=deserialize(a,c);
         node.right=deserialize(a,c);
         return node;
+    }
+    public static void main(String[] args){
+        TreeNode l15 = new TreeNode(15);
+        TreeNode r7 = new TreeNode(7);
+        TreeNode left = new TreeNode(9);
+        TreeNode right = new TreeNode(20,l15, r7);
+        TreeNode root = new TreeNode(3, left, right);
+
+        System.out.println(levelOrderDfs(root));
     }
 }
