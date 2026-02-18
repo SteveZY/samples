@@ -12,6 +12,8 @@ public class MergeToCountInvertedPairs {
     int getRes(){
         return res;
     }
+
+
     void mergeToCount(int []a, int l, int r){
 
         if(l>=r)

@@ -4,7 +4,7 @@ import java.util.ArrayDeque;
 import java.util.Deque;
 
 public class ShortestUnsortedSub {
-    //使用栈
+    //使用栈， 单调栈
     public static int findShortestUnsortedSub(int []array){
         //从左侧开始找到需要向左移动最多的元素，及其应该在 位置 leftMostIdx
         Deque<Integer> stack = new ArrayDeque<>();
@@ -86,7 +86,7 @@ public class ShortestUnsortedSub {
     public static Integer isSorted(int [] a){
         int min = a[0];//升序排列时
         int max = a[0];//降序排列时
-        Integer res = null;
+        Integer res = null; // 1 表示 升序， -1 降序， 0 无序
         //仅遍历一次判断
         for(int i = 1; i< a.length; i++){
             if(a[i] >= max){
@@ -98,7 +98,6 @@ public class ShortestUnsortedSub {
                 max = a[i];//升序排列时，当前值应不小于左侧最大值
             }else {
                 //否则不是升序
-
                 if(a[i] <= min){
                     if (res != null && !res.equals(-1)) {
                         //如果已经设置为升序排列，则说明时无序的
@@ -111,8 +110,6 @@ public class ShortestUnsortedSub {
                     return 0;//不是降序也不是升序
                 }
             }
-
-
         }
         return res;
     }

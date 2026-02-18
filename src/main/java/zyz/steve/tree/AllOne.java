@@ -1,6 +1,7 @@
 package zyz.steve.tree;
 
 import java.util.*;
+import java.util.stream.IntStream;
 //https://leetcode.cn/problems/all-oone-data-structure/
 
 public class AllOne {
@@ -60,6 +61,11 @@ public class AllOne {
     public String getMaxKey() {
         if(map.size()>0){
             Integer a=freq.lastKey();
+
+            for(Map.Entry s: freq.entrySet()){
+
+                s.getKey();
+            }
             return freq.get(a).iterator().next();
 //            for(String s:freq.get(a)){return s;}
         }

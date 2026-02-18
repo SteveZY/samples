@@ -97,9 +97,11 @@ public class MinimumSpanningTree {
 
     }
 
+    // 邻接矩阵 适合 很多 边的 图
+    // 邻接列表 适合 边没那么多的 图， 出发节点 -》 到达节点 以及 距离 或者权重
     //Dijkstra shortest path
     public static void findShortestPathD(int[][] g, int start) {
-        //Idx 0 位置 存放距离
+        //Idx 0 位置 存放距离， idx 1存放的是  节点 在途中的序号 ，
         PriorityQueue<Integer[]> pq = new PriorityQueue<>(
                 //                Comparator.comparingInt(e -> e[0])
                 (o1, o2) -> o1[0].compareTo(o2[0])
@@ -127,7 +129,34 @@ public class MinimumSpanningTree {
             }
             System.out.println("shortest dist from " + start + " to " + u[1] + " is " + u[0]);
         }
+    }
 
+    // g 的行坐标 为 起始 节点， 列坐标 为 相邻的 到达节点
+    public static void shortestPathVer2(int[][] g, int start) {
+        // g is an adj matrix
+        // this is same as the above findShortestPathD with some minor change
+        Queue<Integer[]> pq = new PriorityQueue<>((e1, e2) -> e1[0] - e2[0]);
+        pq.offer(new Integer[]{0, start}); // 将起点放入 Q, 第一个 值表示 到 s 的距离，第二个 为节点的 标识(INDEX 或者名字）
+        boolean[] visited = new boolean[g.length];
+        List<Integer[]> result = new ArrayList<>();
+        // 开始循环
+        while (!pq.isEmpty()) {
+            Integer[] u = pq.poll();
+            Integer uIdx = u[1];// 下一个选中节点 的 标识/名字/index，（一般来讲可以是 名字 或者index ， 者根据图的 邻接 表示方法有关
+            if(visited[uIdx]) break; // save some time
+            Integer curDist = u[0];
+            visited[uIdx] = true; // 标记 该选中节点， 避免面重复选择
+            result.add(new Integer[]{uIdx,curDist}); // 第一个元素 为 节点标记/名字/index， 后面 为到达 起始点的最短距离
+            for (int i = 0; i < g.length; i++) {// 遍历 当前节点的所有 相邻节点
+                int vDist = g[uIdx][i]; // u 为起始点，邻接矩阵 中 u 那一行的数字 表示 对应位置（列坐标） 的节点 跟 u 的距离
+                // 若距离为 0，说明无路径或者是 当前节点 则跳过。所以 g 中路径 必须全部大于0 ，0表示两个节点之前没有路径
+                // 或者 若 该 v 已经 被加入到 S 也跳过
+                if(g[uIdx][i] ==0 || visited[i] ) continue;
+                pq.offer(new Integer[]{curDist+vDist,i});
+
+            }
+        }
+        System.out.println("shortest dist:"+ Arrays.deepToString(result.toArray()));
     }
 
     public static boolean bellmanFord(int[][] g, int s) {
@@ -158,15 +187,15 @@ public class MinimumSpanningTree {
         return true;
     }
 
-//https://www.thejoboverflow.com/p/p1110/
-    public static int getMaxViableValue(int [] arr){
+    //https://www.thejoboverflow.com/p/p1110/
+    public static int getMaxViableValue(int[] arr) {
         List<List<Integer>> pyramid = new ArrayList<>();
         int depth = 0;
         for (int i = 0; i < arr.length; ) {
             depth++;//记录每层的 元素个数
             List<Integer> row = new ArrayList<>();
             int j = i;
-            for (; j < i+depth; j++) {
+            for (; j < i + depth; j++) {
 //                i= i+j;
                 row.add(arr[j]);
             }
@@ -177,28 +206,37 @@ public class MinimumSpanningTree {
         //bottom up
         System.out.println(depth);
 
-        for (int i = depth-2; i >=0 ; i--) {
+        for (int i = depth - 2; i >= 0; i--) {
             List<Integer> curLevel = pyramid.get(i);
             List<Integer> oneLevelDown = pyramid.get(i + 1);
 
             for (int j = 0; j < curLevel.size(); j++) {
-                curLevel.set(j, curLevel.get(j) + Math.max(oneLevelDown.get(j),oneLevelDown.get(j+1)));
+                curLevel.set(j, curLevel.get(j) + Math.max(oneLevelDown.get(j), oneLevelDown.get(j + 1)));
             }
         }
         return pyramid.get(0).get(0);
     }
+
     public int getDepth(int[] arr) {
         return (int) (Math.sqrt(
                 arr.length * 2 * 4 + 1) - 1) >> 1;
     }
+
     public void enumArr(int[] arr) {
         int depth = getDepth(arr);
         //level indx from 0  to depth -1
-        for (int i = depth -2 ; i >=0; i--) {//from the second last
+        for (int i = depth - 2; i >= 0; i--) {//from the second last
 
         }
     }
+
     public static void main(String[] args) {
         System.out.println(getMaxViableValue(new int[]{2, 3, 4, 16, 7, 8}));
+        shortestPathVer2(new int[][]{
+                {0,2,3,4},
+                {2,0,8,0},
+                {3,8,0,9},
+                {4,0,9,0},
+        },3);
     }
 }

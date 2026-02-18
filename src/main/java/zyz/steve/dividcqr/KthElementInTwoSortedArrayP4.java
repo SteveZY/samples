@@ -64,7 +64,8 @@ public class KthElementInTwoSortedArrayP4 {
 
     /**
      * https://www.youtube.com/watch?v=F9c7LpRZWVQ
-     * 由于 a,b 是排序好的，如果能找到 a smaller part + b smaller part 正好 跟 a larger part + b larger part 有相同数量的元素((m+n-1)/2 个 两侧最多差一个)，并且
+     * 由于 a,b 是排序好的，如果能找到 a smaller part + b smaller part 正好 跟 a larger part + b larger part
+     * 有相同数量的元素((m+n-1)/2 个 两侧最多差一个)，并且
      * a smaller part 都小于 b larger part ， b smaller part 都小于 a larger part ,那么 median 就 由边界 a left max , a right min
      * 以及 b left max ，b right min 共同决定
      * 如果 m+n是偶数， 则 median = (max(aLmax, bLmax) + min (aRmin, bRmin)) /2
