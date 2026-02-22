@@ -48,9 +48,11 @@ public class LongestSubstringNoDupChar {
         return ans;
     }
 
+    // https://leetcode.cn/problems/longest-substring-without-repeating-characters/
+    // 无重复字符 子串
     private static int lenLongSubstrUsingMap(String s) {
         int ans = 0, left = 0;
-        Map<Character, Integer> mapxx = new HashMap<>();// 存放 char - index
+        Map<Character, Integer> mapxx = new HashMap<>();// 存放 char ～ index
         for (int i = 0; i < s.length(); i++) {
             char ch = s.charAt(i);
             // abcac
@@ -82,8 +84,8 @@ public class LongestSubstringNoDupChar {
             ans = Math.max(ans, i-left+1);
 
         }
-
         return ans;
-
     }
 }
+
+// KMP https://yeefun.github.io/kmp-algorithm-for-beginners/
