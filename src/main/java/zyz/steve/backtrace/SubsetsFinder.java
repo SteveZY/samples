@@ -90,6 +90,7 @@ public class SubsetsFinder {
                     set.add(nums[i]);
                 }
             }
+//            List.copyOf()
             res.add(set);
         }
         return res;

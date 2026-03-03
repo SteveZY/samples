@@ -63,6 +63,8 @@ public class LongestSubstringNoDupChar {
         return ans;
     }
 
+    // LC 340
+    // https://leetcode.cn/problems/longest-substring-with-at-most-k-distinct-characters/
     private static int lenTwoDupCharAtMax(String s){
         int ans = 0, left =0;
         Map<Character, Integer> map = new HashMap<>(); // 用于 计数 当前加入的字符的数量， Char - counter
@@ -70,9 +72,8 @@ public class LongestSubstringNoDupChar {
             char ch = s.charAt(i);
 
             map.put(ch, map.getOrDefault(ch,0)+1); //计数
-            while (map.size()>2) {
-                // 一旦大于2说明 有不一样的 字符进来
-
+            while (map.size()>2) { //检测 window 中 是否只包含 要求 数量 种类的 字符
+                // 一旦大于2说明 有不一样的 字符进来， 调整 window ，即调整左侧指针
                 char leftChar = s.charAt(left);
                 map.put(leftChar, map.get(leftChar)-1); // 减小left的计数
                 if(map.get(leftChar) == 0){
@@ -82,7 +83,6 @@ public class LongestSubstringNoDupChar {
             }
 //            if(!map.containsKey(ch))map.put(ch,i);
             ans = Math.max(ans, i-left+1);
-
         }
         return ans;
     }
